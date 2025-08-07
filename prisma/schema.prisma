@@ -1,0 +1,90 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum USER_ROLE {
+  author
+  admin
+}
+
+model User {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  email             String    @unique
+  name              String
+  avatar            String?
+  password          String
+  role              USER_ROLE @default(author)
+  isPasswordChanged Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  Post              Post[]
+
+  @@map("users")
+}
+
+model Post {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String    @unique
+  title       String
+  thumbnail   String?
+  description String
+  content     String
+  isPublished Boolean   @default(false)
+  readingTime String
+  views       Int
+  authorId    String    @db.ObjectId
+  categoryId  String    @db.ObjectId
+  tags        PostTag[]
+
+  author   User     @relation(fields: [authorId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("posts")
+}
+
+model Category {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String @unique
+  Post  Post[]
+
+  @@map("categories")
+}
+
+model Tag {
+  id    String    @id @default(auto()) @map("_id") @db.ObjectId
+  title String    @unique
+  post  PostTag[]
+
+  @@map("tags")
+}
+
+model PostTag {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  postId String @db.ObjectId
+  tagId  String @db.ObjectId
+  tag    Tag    @relation(fields: [tagId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id])
+
+  @@unique([postId, tagId])
+  @@map("posts_tags")
+}
+
+model Subscriber {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
+  name     String
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("subscribers")
+}
