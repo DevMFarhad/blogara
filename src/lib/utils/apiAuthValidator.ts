@@ -43,6 +43,10 @@ const apiAuthValidator = (roles?: USER_ROLE[]) => {
         throw new ApiError(404, 'User is not exist.');
       }
 
+      if (existUser.isPasswordChanged !== true) {
+        throw new ApiError(401, 'Unauthorized');
+      }
+
       // Attach user to request
       req.user = decoded;
     } catch (error: any) {

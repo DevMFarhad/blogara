@@ -26,7 +26,6 @@ const sendMail = async ({ from, to, subject, body }: IMailPayload) => {
       to = to.join(', ');
     }
 
-    console.log({ to, subject, body });
     const info = await transporter.sendMail({
       from: from || `${config.app_name} <${config.email}>`,
       to: to || config.email,
