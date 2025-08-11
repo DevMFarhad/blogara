@@ -20,6 +20,6 @@ export const updatePostSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-export const updateBlogStatus = z.object({
-  isPublished: z.boolean(),
+export const publishedPostStatus = z.object({
+  message: z.string(),
 });
