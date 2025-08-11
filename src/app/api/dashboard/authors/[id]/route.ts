@@ -6,7 +6,7 @@ import apiAuthValidator from '@/lib/utils/apiAuthValidator';
 import reqBodyValidator from '@/lib/utils/reqBodyValidator';
 import { updateAuthorSchema } from '@/lib/validations/author.validation';
 
-export const GET = catchAsync(async (req, { params }) => {
+export const GET = catchAsync<{ id: string }>(async (req, { params }) => {
   await apiAuthValidator(['admin'])(req);
 
   const { id } = await params;
@@ -31,7 +31,7 @@ export const GET = catchAsync(async (req, { params }) => {
   });
 });
 
-export const PATCH = catchAsync(async (req, { params }) => {
+export const PATCH = catchAsync<{ id: string }>(async (req, { params }) => {
   await apiAuthValidator(['admin'])(req);
   const { id } = await params;
   const data = await reqBodyValidator(updateAuthorSchema, req);

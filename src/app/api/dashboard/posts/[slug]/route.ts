@@ -7,7 +7,7 @@ import reqBodyValidator from '@/lib/utils/reqBodyValidator';
 import { updatePostSchema } from '@/lib/validations/post.validation';
 import tagCreate from '@/lib/utils/tagCreate';
 
-export const PATCH = catchAsync(async (req, { params }) => {
+export const PATCH = catchAsync<{ slug: string }>(async (req, { params }) => {
   await apiAuthValidator(['admin', 'author'])(req);
   const user = req.user!;
 

@@ -3,7 +3,7 @@ import catchAsync from '@/lib/utils/catchAsync';
 import sendResponse from '@/lib/utils/sendResponse';
 import ApiError from '@/lib/utils/ApiError';
 
-export const GET = catchAsync(async (req, { params }) => {
+export const GET = catchAsync<{ slug: string }>(async (req, { params }) => {
   const { slug } = await params;
   const post = await prisma.post.findUnique({
     where: { slug },
@@ -16,7 +16,7 @@ export const GET = catchAsync(async (req, { params }) => {
   });
 });
 
-export const PATCH = catchAsync(async (req, { params }) => {
+export const PATCH = catchAsync<{ slug: string }>(async (req, { params }) => {
   const { slug } = await params;
   const post = await prisma.post.findUnique({
     where: { slug },

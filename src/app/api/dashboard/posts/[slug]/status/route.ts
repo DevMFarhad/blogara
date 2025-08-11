@@ -6,7 +6,7 @@ import reqBodyValidator from '@/lib/utils/reqBodyValidator';
 import sendResponse from '@/lib/utils/sendResponse';
 import { updateBlogStatus } from '@/lib/validations/post.validation';
 
-export const PATCH = catchAsync(async (req, { params }) => {
+export const PATCH = catchAsync<{ slug: string }>(async (req, { params }) => {
   await apiAuthValidator(['admin'])(req);
 
   const { slug } = await params;
